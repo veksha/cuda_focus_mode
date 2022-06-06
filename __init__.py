@@ -3,18 +3,22 @@ from cudatext import *
 
 INI = app_path(APP_DIR_SETTINGS)+os.sep+'cuda_focus_mode.ini'
 
+def str_to_bool(s): return s=='1'
+def bool_to_str(v): return '1' if v else '0'
+
 class Command:
     def __init__(self):
         self.load_opt()
-        self.enabled = True
 
     def load_opt(self):
         self.file_ext = ini_read(INI, 'op', 'file_ext', 'fountain,someext2,someext3')
         self.dim_value = int(ini_read(INI, 'op', 'dim_value', '150'))
+        self.enabled = str_to_bool(ini_read(INI, 'op', 'enabled', '1'))
 
     def save_opt(self):
         ini_write(INI, 'op', 'file_ext', self.file_ext)
         ini_write(INI, 'op', 'dim_value', str(self.dim_value))
+        ini_write(INI, 'op', 'enabled', bool_to_str(self.enabled))
 
     def config(self):
         self.save_opt()
@@ -60,4 +64,5 @@ class Command:
     def toggle(self):
         self.enabled = not self.enabled
         self.work()
+        self.save_opt()
 
