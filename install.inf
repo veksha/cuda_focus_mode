@@ -15,3 +15,8 @@ section=commands
 caption=Focus Mode\Config
 method=config
 menu=o
+
+[item3]
+section=commands
+caption=Focus Mode\Toggle
+method=toggle

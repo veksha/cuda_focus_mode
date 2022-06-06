@@ -6,6 +6,7 @@ INI = app_path(APP_DIR_SETTINGS)+os.sep+'cuda_focus_mode.ini'
 class Command:
     def __init__(self):
         self.load_opt()
+        self.enabled = True
 
     def load_opt(self):
         self.file_ext = ini_read(INI, 'op', 'file_ext', 'fountain,someext2,someext3')
@@ -37,6 +38,7 @@ class Command:
 
     def work(self):
         ed.dim(DIM_DELETE_ALL)
+        if not self.enabled: return
         if not self.is_filename_ok(): return
 
         x, y, x2, y2 = ed.get_carets()[0]
@@ -54,4 +56,8 @@ class Command:
         if y1>0:
             ed.dim(DIM_ADD, 0, y1-1, self.dim_value)
         ed.dim(DIM_ADD, y2+1, max_y, self.dim_value)
+
+    def toggle(self):
+        self.enabled = not self.enabled
+        self.work()
 
